@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PURSUE Release 01 — Document Hub</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #080c12;
+      --surface:   #0f1620;
+      --surface2:  #141d28;
+      --border:    #1e2a38;
+      --text:      #c8d6e5;
+      --muted:     #9eafc4;
+      --accent:    #4fc3f7;
+      --accent2:   #0288d1;
+      --warn:      #ffb74d;
+      --green:     #66bb6a;
+      --radius:    8px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── Header ────────────────────────────── */
+    header {
+      text-align: center;
+      padding: 48px 24px 24px;
+    }
+    header h1 {
+      font-size: 2.4em;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    header .subtitle {
+      font-size: 1.05em;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    header .meta {
+      font-size: 0.8em;
+      color: var(--muted);
+    }
+
+    /* ── Container ─────────────────────────── */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── Section headings ──────────────────── */
+    .section-title {
+      font-size: 0.75em;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin: 48px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-title:first-of-type { margin-top: 0; }
+
+    /* ── Featured card (exec summary) ──────── */
+    .featured {
+      background: linear-gradient(135deg, rgba(79,195,247,0.08) 0%, rgba(2,136,209,0.04) 100%);
+      border: 1px solid rgba(79,195,247,0.2);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      margin-top: 40px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .featured:hover {
+      border-color: rgba(79,195,247,0.4);
+      background: linear-gradient(135deg, rgba(79,195,247,0.12) 0%, rgba(2,136,209,0.06) 100%);
+    }
+    .featured .label {
+      display: inline-block;
+      font-size: 0.65em;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      background: rgba(79,195,247,0.12);
+      padding: 3px 10px;
+      border-radius: 3px;
+      margin-bottom: 10px;
+    }
+    .featured h2 {
+      font-size: 1.3em;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .featured p {
+      font-size: 0.88em;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+    .featured .actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    /* ── Buttons ───────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78em;
+      font-weight: 600;
+      text-decoration: none;
+      padding: 8px 18px;
+      border-radius: 5px;
+      transition: background 0.15s, transform 0.1s;
+      cursor: pointer;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary {
+      background: var(--accent2);
+      color: #fff;
+    }
+    .btn-primary:hover { background: #039be5; }
+    .btn-ghost {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid rgba(79,195,247,0.25);
+    }
+    .btn-ghost:hover { background: rgba(79,195,247,0.08); }
+    .btn-sm {
+      font-size: 0.68em;
+      padding: 5px 12px;
+      border-radius: 4px;
+    }
+    .btn-xs {
+      font-size: 0.62em;
+      padding: 4px 10px;
+      border-radius: 3px;
+    }
+
+    /* ── Doc row inside track cards ────────── */
+    .doc-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .doc-row .doc-label {
+      font-size: 0.62em;
+      color: var(--muted);
+      min-width: 60px;
+    }
+
+    /* ── Track grid ────────────────────────── */
+    .track-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+    }
+    .track-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .track-card:hover {
+      border-color: rgba(79,195,247,0.25);
+      background: var(--surface2);
+    }
+    .track-card .track-badge {
+      display: inline-block;
+      font-size: 0.7em;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      background: rgba(79,195,247,0.1);
+      padding: 2px 8px;
+      border-radius: 3px;
+      margin-bottom: 8px;
+    }
+    .track-card h3 {
+      font-size: 0.95em;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .track-card .desc {
+      font-size: 0.8em;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .track-card .docs { list-style: none; }
+    .track-card .docs li {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72em;
+      padding: 5px 0;
+    }
+    .track-card .docs a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .track-card .docs a:hover { text-decoration: underline; }
+    .track-card .docs .pending {
+      color: var(--muted);
+      font-style: italic;
+    }
+    .file-icon { font-size: 1.1em; }
+    .badge-ready {
+      font-size: 0.6em;
+      background: rgba(102,187,106,0.15);
+      color: var(--green);
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-weight: 600;
+    }
+
+    /* ── Stats bar ─────────────────────────── */
+    .stats {
+      display: flex;
+      gap: 32px;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 20px 32px;
+      margin: 0 auto;
+      width: fit-content;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .stat { text-align: center; }
+    .stat .num {
+      font-size: 2em;
+      font-weight: 800;
+      color: var(--accent);
+    }
+    .stat .label {
+      font-size: 0.7em;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ── Footer ────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 32px 24px;
+      border-top: 1px solid var(--border);
+      font-size: 0.7em;
+      color: var(--muted);
+    }
+    footer a { color: var(--accent); }
+
+    /* ── Responsive ────────────────────────── */
+    @media (max-width: 600px) {
+      header { padding: 40px 16px 28px; }
+      header h1 { font-size: 1.6em; }
+      .container { padding: 24px 12px 60px; }
+      .featured { padding: 20px; }
+      .track-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Initial Analysis: PURSUE Release 01</h1>
+  <p class="subtitle">U.S. Government Unidentified Anomalous Phenomena (UAP) Files</p>
+</header>
+
+<div class="stats">
+  <div class="stat"><div class="num">161</div><div class="label">Source Files</div></div>
+  <div class="stat"><div class="num">6</div><div class="label">Agencies</div></div>
+  <div class="stat"><div class="num">7</div><div class="label">Analysis Tracks</div></div>
+  <div class="stat"><div class="num">1944</div><div class="label">Earliest Record</div></div>
+</div>
+
+<div class="container">
+
+  <!-- ── About & Disclaimer ────────────────── -->
+  <div class="section-title" style="font-size:1.0em;">ABOUT &amp; DISCLAIMER</div>
+  <p style="font-size:0.88em; color:#9eafc4; line-height:1.7;">
+    This is a <span style="color:#fff;">personal research project</span> that analyzes declassified U.S. government UAP files.
+    Release 01 covers 161 documents from 6 agencies — Department of War, FBI, NASA,
+    State Department, AARO, and DVIDS — spanning 1944 to 2025. The files were organized
+    into 7 analysis tracks and converted into slide decks. This page is an index — click any
+    track below to view or download the research summary slides.
+  </p>
+  <p style="font-size:0.88em; color:#9eafc4; line-height:1.7; margin-top:12px;">
+    <span style="color:#fff;">I'm not a UFO expert, researcher, or authority</span> — just a curious person who read the files.
+    This is a personal project analyzing publicly available government documents. Nothing here
+    is professional analysis, insider information, or official conclusions. Treat it as one
+    person's attempt to organize and understand what's in the public record — and take it all
+    with a giant grain of salt.
+  </p>
+
+  <!-- ── Executive Summary ─────────────────── -->
+  <div class="featured">
+    <div class="label">📄 Executive Summary</div>
+    <h2>PURSUE Release 01 — Full Overview</h2>
+    <p>Complete 13-slide executive summary covering all 7 analysis tracks. Includes cross-cutting patterns across 80 years of UAP documentation, a ranked credibility assessment of the strongest findings, and the key unresolved questions that remain open.</p>
+    <div class="actions">
+      <a href="pursue-release-01-executive-summary.pdf" class="btn btn-primary">📖 View PDF</a>
+      <a href="pursue-release-01-executive-summary.pdf" class="btn btn-ghost" download>⬇ Download</a>
+    </div>
+  </div>
+
+  <!-- ── Tracks ────────────────────────────── -->
+  <div class="section-title" style="font-size:1.0em;">Analysis Tracks</div>
+  <div class="track-grid">
+
+    <!-- Track A -->
+    <div class="track-card">
+      <div class="track-badge">Track A</div>
+      <h3>Birth of the Phenomenon</h3>
+      <p class="desc">1944–1949: Foo Fighters, Arnold sighting, Project Sign → Grudge. Active investigation pivots to institutional closure.</p>
+      <div class="doc-row">
+        <a href="track-a-slides.pdf" class="btn btn-primary btn-sm">View PDF</a>
+        <a href="track-a-slides.pdf" class="btn btn-ghost btn-sm" download>⬇</a>
+      </div>
+    </div>
+
+    <!-- Track B -->
+    <div class="track-card">
+      <div class="track-badge">Track B</div>
+      <h3>Military Mission Reports</h3>
+      <p class="desc">2016–2025: 41 reports across 7 theaters. EMI correlation, COLD thermal signatures, trans-medium concerns.</p>
+      <div class="doc-row">
+        <a href="track-b-slides.pdf" class="btn btn-primary btn-sm">View PDF</a>
+        <a href="track-b-slides.pdf" class="btn btn-ghost btn-sm" download>⬇</a>
+      </div>
+    </div>
+
+    <!-- Track B - Video -->
+    <div class="track-card">
+      <div class="track-badge">Video Appendix</div>
+      <h3>DVIDS Video Analysis</h3>
+      <p class="desc">15 videos analyzed: sensor-behavior evidence, GPT-5.5 vision analysis, curated highlights.</p>
+      <div class="doc-row">
+        <a href="track-b-video-analysis-slides.pdf" class="btn btn-primary btn-sm">View PDF</a>
+        <a href="track-b-video-analysis-slides.pdf" class="btn btn-ghost btn-sm" download>⬇</a>
+      </div>
+    </div>
+
+    <!-- Track C -->
+    <div class="track-card">
+      <div class="track-badge">Track C</div>
+      <h3>Astronaut Testimony</h3>
+      <p class="desc">Gemini 7, Apollo 12/17 crew observations. Crossed-out transcripts, CAPCOM silence, COMETA Report.</p>
+      <div class="doc-row">
+        <a href="track-c-slides.pdf" class="btn btn-primary btn-sm">View PDF</a>
+        <a href="track-c-slides.pdf" class="btn btn-ghost btn-sm" download>⬇</a>
+      </div>
+    </div>
+
+    <!-- Track D -->
+    <div class="track-card">
+      <div class="track-badge">Track D</div>
+      <h3>FBI Case File 62-HQ-83894</h3>
+      <p class="desc">2,638 pages spanning 1947–1968. Single largest file in Release 01. Active investigation → passive mail management.</p>
+      <div class="doc-row">
+        <a href="track-d-slides.pdf" class="btn btn-primary btn-sm">View PDF</a>
+        <a href="track-d-slides.pdf" class="btn btn-ghost btn-sm" download>⬇</a>
+      </div>
+    </div>
+
+    <!-- Track E -->
+    <div class="track-card">
+      <div class="track-badge">Track E</div>
+      <h3>Diplomatic Cables</h3>
+      <p class="desc">Hunter Memo (1963), Kazakhstan (1994), PNG (1985), USPER Statement (2025). Extraordinary candor from State Dept.</p>
+      <div class="doc-row">
+        <a href="track-e-slides.pdf" class="btn btn-primary btn-sm">View PDF</a>
+        <a href="track-e-slides.pdf" class="btn btn-ghost btn-sm" download>⬇</a>
+      </div>
+    </div>
+
+    <!-- Track F -->
+    <div class="track-card">
+      <div class="track-badge">Track F</div>
+      <h3>Contemporary FBI</h3>
+      <p class="desc">Sep 2023: 3 independent FD-302 interviews, consistent descriptions. Documented stigma against UAP reporting.</p>
+      <div class="doc-row">
+        <a href="track-f-slides.pdf" class="btn btn-primary btn-sm">View PDF</a>
+        <a href="track-f-slides.pdf" class="btn btn-ghost btn-sm" download>⬇</a>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<footer>
+  Built by <a href="https://linktr.ee/jofaichow" target="_blank" rel="noopener">Joe</a> · Analysis powered by <a href="https://hermes-agent.nousresearch.com/" target="_blank" rel="noopener">Hermes Agent</a>, DeepSeek v4 Pro, and GPT‑5.5
+  <br>
+  PURSUE Release 01 · <a href="https://war.gov/UFO">war.gov/UFO</a> · May 8, 2026
+</footer>
+
+</body>
+</html>
